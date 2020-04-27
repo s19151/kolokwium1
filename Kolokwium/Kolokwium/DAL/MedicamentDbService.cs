@@ -19,10 +19,8 @@ namespace Kolokwium.DAL
             using (var cmd = con.CreateCommand())
             {
                 con.Open();
-                var tran = con.BeginTransaction("GetMedicamentData");
 
                 cmd.Connection = con;
-                cmd.Transaction = tran;
 
                 cmd.CommandText = "SELECT * FROM Medicament WHERE IdMedicament = @id";
                 cmd.Parameters.AddWithValue("id", idMedicament);
@@ -30,7 +28,6 @@ namespace Kolokwium.DAL
                 var dr = cmd.ExecuteReader();
                 if (!dr.Read())
                 {
-                    tran.Rollback();
                     dr.Close();
                     //dodac nowe klasy do rzucania specyficznych wyjatkow
                     throw new Exception("Brak leku o podanym Id");
