@@ -3,31 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kolokwium.DAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kolokwium.Controllers
 {
+    [Route("api/patients")]
     [ApiController]
-    [Route("api/medicaments")]
-    public class MedicamentController : ControllerBase
+    public class PatientsController : ControllerBase
     {
         private IDbService _dbService;
-
-        public MedicamentController(IDbService dbService)
+        public PatientsController(IDbService dbService)
         {
             _dbService = dbService;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetMedicamentData(int idMedicament)
+        [HttpDelete("{id}")]
+        public IActionResult DeletePatient(int idPatient)
         {
             try
             {
-                return Ok(_dbService.GetMedicamentData(idMedicament));
+                _dbService.DeletePatient(idPatient);
+                return Ok();
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                return BadRequest(e.Message);
             }
         }
     }

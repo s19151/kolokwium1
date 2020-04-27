@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Kolokwium.DAL
 {
-    interface IDbService
+    public interface IDbService
     {
         public MedicamentDataResponse GetMedicamentData(int idMedicament);
+        public void DeletePatient(int idPatient);
     }
 }

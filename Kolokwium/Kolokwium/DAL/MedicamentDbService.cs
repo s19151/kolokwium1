@@ -18,11 +18,11 @@ namespace Kolokwium.DAL
             using (var con = new SqlConnection(_dbConnectionString))
             using (var cmd = con.CreateCommand())
             {
-                var tran = con.BeginTransaction();
+                con.Open();
+                var tran = con.BeginTransaction("GetMedicamentData");
 
                 cmd.Connection = con;
                 cmd.Transaction = tran;
-                con.Open();
 
                 cmd.CommandText = "SELECT * FROM Medicament WHERE IdMedicament = @id";
                 cmd.Parameters.AddWithValue("id", idMedicament);
@@ -64,6 +64,30 @@ namespace Kolokwium.DAL
             }
 
             return medicamentData;
+        }
+
+        public void DeletePatient(int IdPatient)
+        {
+            using (var con = new SqlConnection(_dbConnectionString))
+            using (var cmd = con.CreateCommand())
+            {
+                con.Open();
+
+                cmd.Connection = con;
+
+                cmd.CommandText = "SELECT 1 FROM Prescription WHERE IdPatient = @id";
+                cmd.Parameters.AddWithValue("id", IdPatient);
+
+                var dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    throw new Exception("sa dane");
+                }
+                dr.Close();
+
+                cmd.CommandText = "DELETE FROM Patient WHERE IdPatient = @id";
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
