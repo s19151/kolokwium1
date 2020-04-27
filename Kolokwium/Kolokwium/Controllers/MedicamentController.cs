@@ -18,7 +18,7 @@ namespace Kolokwium.Controllers
             _dbService = dbService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetMedicamentData(int idMedicament)
         {
             try
